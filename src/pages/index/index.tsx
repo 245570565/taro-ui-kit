@@ -4,7 +4,7 @@ import './index.scss'
 
 export default function Index () {
   useLoad(() => {
-    console.log('Pagesssddds测222试')
+    console.log('Pagesssddds测ss222试')
   })
 
   return (
