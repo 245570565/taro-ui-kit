@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { View, Text } from '@tarojs/components'
 import { DrawerProps } from './types'
 import './index.scss'
@@ -21,24 +21,12 @@ export default function Drawer(props: DrawerProps) {
     afterClose
   } = props
 
-  const [isReady, setIsReady] = useState(false)
   const drawerRef = useRef<HTMLDivElement>(null)
   const animationRef = useRef<NodeJS.Timeout | null>(null)
 
-  // 处理方向变化和初始化
-  useEffect(() => {
-    // 重置状态，确保样式正确应用
-    setIsReady(false)
-    // 短暂延迟确保样式已应用
-    const timer = setTimeout(() => {
-      setIsReady(true)
-    }, 30)
-    return () => clearTimeout(timer)
-  }, [placement])
-
   // 处理动画结束回调
   useEffect(() => {
-    if (visible && isReady) {
+    if (visible) {
       // 抽屉打开后触发回调
       animationRef.current = setTimeout(() => {
         afterOpen?.()
@@ -55,7 +43,7 @@ export default function Drawer(props: DrawerProps) {
         clearTimeout(animationRef.current)
       }
     }
-  }, [visible, isReady, afterOpen, afterClose])
+  }, [visible, afterOpen, afterClose])
 
   const handleMaskClick = () => {
     if (maskClosable) {
@@ -95,9 +83,11 @@ export default function Drawer(props: DrawerProps) {
     }
   }
 
+  console.log('Drawer render:', { visible, placement, className: `ui-drawer ui-drawer--${placement} ${visible ? 'ui-drawer--visible' : ''}` })
+
   return (
     <>
-      {visible && isReady && (
+      {visible && (
         <View
           className='ui-drawer-mask'
           style={getMaskStyle()}
@@ -106,7 +96,7 @@ export default function Drawer(props: DrawerProps) {
       )}
       <View
         ref={drawerRef}
-        className={`ui-drawer ui-drawer--${placement} ${visible && isReady ? 'ui-drawer--visible' : ''}`}
+        className={`ui-drawer ui-drawer--${placement} ${visible ? 'ui-drawer--visible' : ''}`}
         style={getDrawerStyle()}
       >
         {title && (
