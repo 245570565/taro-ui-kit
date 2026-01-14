@@ -2,10 +2,13 @@ import React, { useState } from 'react'
 import { View, Text } from '@tarojs/components'
 import { useLoad } from '@tarojs/taro'
 import Button from '../../components/Button'
+import Drawer from '../../components/Drawer'
 import './index.scss'
 
 export default function Index () {
   const [loading, setLoading] = useState(false)
+  const [drawerVisible, setDrawerVisible] = useState(false)
+  const [drawerPlacement, setDrawerPlacement] = useState<'left' | 'right' | 'top' | 'bottom'>('right')
 
   useLoad(() => {
     console.log('Pagesssddds测ss222试')
@@ -20,6 +23,18 @@ export default function Index () {
     setTimeout(() => {
       setLoading(false)
     }, 2000)
+  }
+
+  const handleDrawerOpen = (placement: 'left' | 'right' | 'top' | 'bottom') => {
+    setDrawerPlacement(placement)
+    // 短暂延迟确保方向已更新，然后显示抽屉
+    setTimeout(() => {
+      setDrawerVisible(true)
+    }, 50)
+  }
+
+  const handleDrawerClose = () => {
+    setDrawerVisible(false)
   }
 
   return (
@@ -96,6 +111,51 @@ export default function Index () {
           </View>
         </View>
       </View>
+      
+      <View className='demo-section'>
+        <Text className='section-title'>抽屉组件演示</Text>
+        
+        <View className='demo-card'>
+          <Text className='card-title'>抽屉方向</Text>
+          <View className='button-grid'>
+            <Button type='primary' onClick={() => handleDrawerOpen('left')}>左侧抽屉</Button>
+            <Button type='primary' onClick={() => handleDrawerOpen('right')}>右侧抽屉</Button>
+            <Button type='primary' onClick={() => handleDrawerOpen('top')}>顶部抽屉</Button>
+            <Button type='primary' onClick={() => handleDrawerOpen('bottom')}>底部抽屉</Button>
+          </View>
+        </View>
+      </View>
+      
+      <Drawer
+        visible={drawerVisible}
+        placement={drawerPlacement}
+        title={`${getPlacementText(drawerPlacement)}抽屉`}
+        onClose={handleDrawerClose}
+        afterOpen={() => console.log('Drawer opened')}
+        afterClose={() => console.log('Drawer closed')}
+      >
+        <View className='drawer-content'>
+          <Text className='drawer-text'>这是一个{getPlacementText(drawerPlacement)}方向的抽屉</Text>
+          <Text className='drawer-description'>
+            抽屉组件可以从四个方向弹出，具有平滑的过渡动画效果。
+            您可以通过点击遮罩或关闭按钮来关闭抽屉。
+          </Text>
+          <View className='drawer-actions'>
+            <Button type='primary' onClick={handleDrawerClose}>关闭抽屉</Button>
+          </View>
+        </View>
+      </Drawer>
     </View>
   )
+}
+
+// 获取方向文本
+function getPlacementText(placement: 'left' | 'right' | 'top' | 'bottom'): string {
+  const placementMap = {
+    left: '左侧',
+    right: '右侧',
+    top: '顶部',
+    bottom: '底部'
+  }
+  return placementMap[placement]
 }
