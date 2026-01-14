@@ -4,7 +4,7 @@ import './index.scss'
 
 export default function Index () {
   useLoad(() => {
-    console.log('Page loaded.')
+    console.log('Page loa2de2d.')
   })
 
   return (
