@@ -11,18 +11,13 @@ export default function Button(props: ButtonProps) {
     className = '',
     style,
     onClick,
-    children
+    children,
+    circle = false,
+    block = false
   } = props
 
-/**
- * 处理点击事件的函数
- * @param e - 点击事件对象
- */
   const handleClick = (e: any) => {
-  // 如果组件被禁用或正在加载中，则直接返回，不执行任何操作
     if (disabled || loading) return
-  // 调用传入的onClick回调函数，并将事件对象传递给它
-  // 使用可选链操作符(?.)确保onClick存在时才调用
     onClick?.(e)
   }
 
@@ -32,6 +27,8 @@ export default function Button(props: ButtonProps) {
     `ui-button--${size}`,
     disabled ? 'ui-button--disabled' : '',
     loading ? 'ui-button--loading' : '',
+    circle ? 'ui-button--circle' : '',
+    block ? 'ui-button--block' : '',
     className
   ].filter(Boolean).join(' ')
 

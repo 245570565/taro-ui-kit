@@ -2,7 +2,7 @@ import { CSSProperties } from 'react'
 
 export interface ButtonProps {
   /** 按钮类型 */
-  type?: 'primary' | 'default' | 'warn'
+  type?: 'primary' | 'default' | 'warn' | 'outline' | 'text'
   /** 按钮尺寸 */
   size?: 'small' | 'medium' | 'large'
   /** 是否禁用 */
@@ -17,4 +17,8 @@ export interface ButtonProps {
   onClick?: (e: any) => void
   /** 按钮内容 */
   children?: React.ReactNode
+  /** 是否为圆形按钮 */
+  circle?: boolean
+  /** 是否为块级按钮 */
+  block?: boolean
 }
