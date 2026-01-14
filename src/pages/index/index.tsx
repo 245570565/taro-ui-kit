@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text } from '@tarojs/components'
 import { useLoad } from '@tarojs/taro'
 import Button from '../../components/Button'
 import Drawer from '../../components/Drawer'
+import ChatMessage from '../../components/ChatMessage'
 import './index.scss'
 
 export default function Index () {
@@ -211,7 +212,6 @@ export default function Index () {
           </View>
         </View>
       </Drawer>
-
       {/* 底部抽屉 */}
       <Drawer
         visible={bottomDrawerVisible}
@@ -233,8 +233,94 @@ export default function Index () {
           </View>
         </View>
       </Drawer>
+      
+      <View className='demo-section'>
+        <Text className='section-title'>聊天消息组件演示</Text>
+        
+        <View className='demo-card'>
+          <Text className='card-title'>不同角色消息</Text>
+          <ChatMessage
+            role='user'
+            content='你好，我有一个健康问题想咨询'
+            timestamp={Date.now() - 3600000}
+          />
+          <ChatMessage
+            role='doctor'
+            content='您好，请问有什么可以帮助您的？'
+            timestamp={Date.now() - 3540000}
+          />
+          <ChatMessage
+            role='ai'
+            content='我是AI助手，可以为您提供初步的健康建议'
+            timestamp={Date.now() - 3480000}
+          />
+          <ChatMessage
+            role='system'
+            content='系统消息：请注意保护个人隐私'
+            timestamp={Date.now() - 3420000}
+          />
+        </View>
+        
+        <View className='demo-card'>
+          <Text className='card-title'>流式输出演示</Text>
+          <ChatMessage
+            role='ai'
+            content='正在为您生成健康建议...'
+            streaming
+            status='streaming'
+            timestamp={Date.now() - 1800000}
+          />
+          <ChatMessage
+            role='ai'
+            content='思考中，请稍候...'
+            status='thinking'
+            timestamp={Date.now() - 1200000}
+          />
+        </View>
+        
+        <View className='demo-card'>
+          <Text className='card-title'>Markdown 支持</Text>
+          <ChatMessage
+            role='ai'
+            content={`# 健康建议\n\n## 饮食建议\n- 多吃蔬菜水果\n- 少吃油腻食物\n- 保持适量饮水\n\n## 运动建议\n- 每天坚持30分钟运动\n- 选择适合自己的运动方式\n- 避免过度运动\n\n> 注意：以上建议仅供参考，具体请咨询专业医生。`}
+            timestamp={Date.now() - 600000}
+          />
+        </View>
+        
+        <View className='demo-card'>
+          <Text className='card-title'>风险提示演示</Text>
+          <ChatMessage
+            role='doctor'
+            content='您的症状需要进一步检查，建议尽快就医'
+            riskLevel='high'
+            timestamp={Date.now() - 300000}
+          />
+          <ChatMessage
+            role='ai'
+            content='您的健康状况基本正常，但需要注意休息'
+            riskLevel='medium'
+            timestamp={Date.now() - 150000}
+          />
+          <ChatMessage
+            role='ai'
+            content='您的健康状况良好，继续保持健康的生活方式'
+            riskLevel='low'
+            timestamp={Date.now()}
+          />
+        </View>
+        
+        <View className='demo-card'>
+          <Text className='card-title'>错误状态演示</Text>
+          <ChatMessage
+            role='ai'
+            content=''
+            status='error'
+            errorMessage='抱歉，我暂时无法回答这个问题，请稍后重试'
+            timestamp={Date.now()}
+          />
+        </View>
+      </View>
     </View>
   )
 }
-
 
